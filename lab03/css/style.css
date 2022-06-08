@@ -1,0 +1,8 @@
+.block{
+    text-align: center;
+    border: 3px red dotted;
+    margin: 20px;
+}
+button{
+    margin-bottom: 20px;
+}

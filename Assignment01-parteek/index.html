@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<!--
+
+    Name - Parteek
+    Email - parteek@sheridancollege.ca
+    Date - 5 June, 2022
+    Description - The main index page for the assignment.
+
+ -->
+
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Assign01-Responsive Debugger</title>
+
+    <!-- CS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- JS -->
+    <script src="js/main.js"></script>
+    <script src="http://ejd.songho.ca/syst24444/webgl.js"></script>
+    <script src="http://ejd.songho.ca/syst24444/Smal.js"></script>
+    <script src="http://ejd.songho.ca/syst24444/Logger.js"></script>
+
+</head>
+<body>
+    <div class="fullblock">
+        
+        <div class="heading"><h1 id="heading">DeBugger</h1></div>
+        
+        <!-- 3D render view -->
+        <canvas id="DeBugger"></canvas>
+
+        <!-- thumbnail container -->
+        <div class="thumbblock">
+            <div class="thumb" id="thumb1" data-name="DeBugger"><img class="thumb_img3" src="./images/thumb_debugger.png">DeBugger</div>
+            <div class="thumb" id="thumb2" data-name="Celestia"><img class="thumb_img2" src="./images/thumb_celestia.png">Celestia</div>
+            <div class="thumb" id="thumb3" data-name="Totoro"><img class="thumb_img5" src="./images/thumb_totoro.png">Totoro</div>
+            <div class="thumb" id="thumb4" data-name="LuckyCat"><img class="thumb_img4" src="./images/thumb_luckycat.png">Lucky Cat</div>
+            <div class="thumb" id="thumb5" data-name="Beethoven"><img class="thumb_img1" src="./images/thumb_beethoven.png">Beethoven</div>
+        </div>
+
+        <!-- controls container -->
+        <div class="controls">
+            <fieldset>
+                <legend>Options</legend>
+                <input type="checkbox" class="texture" id="texture">
+                <label for="texture">Texture</label><br>
+                <input type="checkbox" class="spin" id="spin">
+                <label for="spin">Spin</label><br>
+                <button class="reset" type="reset" id="reset">Reset Camera</button>
+            </fieldset>
+        </div>
+
+        <!-- coyright container -->
+        <div class="footer">&copy; <a href="https://parteek-portfolio.netlify.app/homepage"  target="_blank" rel="noopener noreferrer">Parteek</a></div>
+</div>
+</body>
+</html>

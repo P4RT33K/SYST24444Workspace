@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <!-- 
+    AUTHOR: Parteek
+     -->
+
+    <head>
+
+        <title>2-column flex</title>
+
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- CSS -->
+        <style>
+            body {
+                margin: 0;
+                padding: 0px;
+                box-sizing: border-box;
+            }
+            .flexblock {
+                display: flex;
+                height: 100vh; /* use 100% of height */
+                gap: 10px;
+                background-color: rgb(208, 0, 0);
+            }
+            .col1 {
+                flex: 2 1 0px; /* grow, shrink, basis */
+                text-align: center;
+                background: rgb(133, 155, 255);
+            }
+            .col2 {
+                flex: 1 1 0px; /* grow, shrink, basis */
+                text-align: center;
+                background: rgb(255, 163, 255);
+            }
+            @media (max-aspect-ratio:1/1) { /* w/h */
+                .flexblock {
+                    flex-direction: column;
+                }
+            }
+        </style>
+        <!-- JavaScript -->
+        <script>
+            let go = {}; // global object
+            
+            document.addEventListener("DOMContentLoaded", function()
+            {
+                go.col1 = document.querySelector(".col1");
+                go.col2 = document.querySelector(".col2");
+                go.dim1 = document.getElementById("dim1");
+                go.dim2 = document.getElementById("dim2");
+                handleResize(); // initial call
+                window.addEventListener("resize", handleResize);
+            });
+
+            function handleResize()
+            {
+                go.dim1.innerText = go.col1.clientWidth + " x " + go.col1.clientHeight;
+                go.dim2.innerText = go.col2.clientWidth + " x " + go.col2.clientHeight;
+            }
+         </script>
+
+    </head>
+
+    <body> 
+        <div class="flexblock">
+            <div class="col1">
+                <h1>Column 1</h1>
+                <span id="dim1">0x0</span>
+            </div>
+            <div class="col2">
+                <h1>Column 2</h1>
+                <span id="dim2">0x0</span>
+            </div>
+        </div>  
+    </body>
+
+</html>

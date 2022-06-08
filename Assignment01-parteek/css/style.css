@@ -1,0 +1,88 @@
+/* 
+
+Name - Parteek
+Email - parteek@sheridancollege.ca
+Date - 5 June, 2022
+Description - this file has all the required CSS properties
+
+*/
+
+body{
+    margin: 0px;
+    padding: 0px;
+}
+.fullblock{
+    height: 100vh;
+    line-height: 0;
+    overflow: hidden;
+}
+.heading{
+    text-align: center;
+    font-size:large;
+}
+.thumbblock{
+    position: absolute;
+    right: 10px;
+    bottom: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+    transform: translate(0,50%);
+}
+.thumb{
+    width: 15vh;
+    height: 15vh;
+    margin-bottom: 3vh;
+    text-align: center;
+    border: 1px gray solid;
+}
+.thumb:hover{
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.16), 0 1px 2px rgba(0,0,0,0.16);
+}
+.thumb_img1, .thumb_img2, .thumb_img3, .thumb_img4, .thumb_img5{
+    width: 100%;
+    height: 100%;
+    margin-bottom: 1vh;
+}
+.footer{
+    bottom: 10px;
+    position: absolute;
+    right: 10px;
+}
+.controls{
+    position: absolute;
+    top: 0;
+    margin: 10px;
+}
+.texture, .spin, .reset{
+    padding: 5px;
+    margin-top: 8px;
+}
+.reset:hover{
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.16), 0 1px 2px rgba(0,0,0,0.16);
+}
+
+/* for portrait where width < height*/
+@media(max-aspect-ratio:1/1){
+    .thumbblock{
+        right: 50%;
+        bottom: 5vw;
+        display: flex;
+        flex-direction: row;
+        gap: 1vw;
+        transform: translate(50%, 0);
+    }
+    .thumb{
+        width: 15vw;
+        height: 15vw;
+        margin-bottom: 2vh;
+        text-align: center;
+        border: 1px gray solid;
+    }
+    .thumb_img1, .thumb_img2, .thumb_img3, .thumb_img4, .thumb_img5{
+        width: 100%;
+        height: 100%;
+    }
+}
