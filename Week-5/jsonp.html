@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- ==========================================================================
+Test JSONP
+
+ AUTHOR: Song Ho Ahn (song.ahn@gmail.com)
+CREATED: 2016-08-09
+UPDATED: 2021-06-08
+===============================================================================
+-->
+
+<head>
+
+<title>JSONP</title>
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="author" content="Song Ho Ahn" />
+
+<!-- CSS -->
+<style>
+body {
+    margin:0;
+    padding:0;
+    font-size:16px;
+}
+.comment {
+    color:#080;
+}
+.string {
+    color:#f0f;
+}
+#data {
+    height:200px;
+    overflow:auto;
+    background-color:#eee;
+    border:1px solid #ccc;
+    margin:5px 5px 50px 5px;
+}
+
+</style>
+
+<!-- Javascript -->
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://www.songho.ca/js/Logger.js"></script>
+<script>
+// <![CDATA[
+
+///////////////////////////////////////////////////////////////////////////////
+// main entry point
+$(document).ready(function()
+{
+    Logger.open();
+
+    const URL = "http://www.songho.ca/tmp/students_2022.jsonp";
+
+    // 1. create <script> tag and add it to document
+    let script = document.createElement("script");
+    script.src = URL;
+    script.type = "application/json";
+    document.body.appendChild(script);
+
+    // 2. with jQuery.ajax()
+    // NOTE: the callback runJsonp will be automatically called
+    let option = {
+        url: URL,
+        type: "GET",
+        dataType: "jsonp",
+        jsonpCallback: "runJsonp"
+    };
+    $.ajax(option).catch(() => log("ERROR in $.ajax()"));
+
+    // 3. with jQuery.getJSON()
+    // NOTE: the callback runJsonp will be automatically called
+    // NOTE: getJSON() won't work locally, test it remotely
+    $.getJSON(URL + "?callback=?").catch(() => log("ERROR in $.getJSON()"));
+});
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+function runJsonp(data)
+{
+    // populate data to <div>
+    let html = "";
+    for(let e of data)
+    {
+        html += "<div>" + e.firstName + " " + e.lastName + "</div>";
+    }
+    document.getElementById("data").innerHTML = html;
+
+    log("=== Loaded JSONP ===");
+    log(data);
+}
+
+
+
+
+
+// ]]>
+</script>
+
+</head>
+<body>
+
+<h1>JSONP (JSON with Padding)</h1>
+
+<pre><code>
+    <span class="comment">// JSONP file to load</span>
+    const URL = <span class="string">"http://www.songho.ca/tmp/students_2022.jsonp"</span>;
+
+    <span class="comment">// 1. create &lt;script&gt; tag and add it to document</span>
+    let script = document.createElement(<span class="string">"script"</span>);
+    script.<b>src</b> = URL;
+    script.type = "application/json";
+    document.body.appendChild(script);
+
+    function runJsonp(data)
+    {
+        <span class="comment">// parse JSON data here</span>
+        ...
+    }
+
+
+    <span class="comment">// 2. with jQuery.ajax()</span>
+    <span class="comment">// NOTE: the callback runJsonp will be automatically called</span>
+    let option = {
+        url: URL,
+        type: "GET",
+        <b>dataType</b>: <span class="string">"<b>jsonp</b>"</span>,
+        <b>jsonpCallback</b>: <span class="string">"<b>runJsonp</b>"</span>
+    };
+    $.ajax(option).catch(() => log("ERROR in $.ajax()"));
+
+
+    <span class="comment">// 3. with jQuery.getJSON()</span>
+    <span class="comment">// NOTE: getJSON() won't work locally, test it remotely, or Live Server</span>
+    $.getJSON(URL + <span class="string">"<b>?callback=?</b>"</span>).catch(() => log("ERROR in $.getJSON()"));
+
+
+</code></pre>
+
+<div id="data">
+aaa
+</div>
+
+</body>
+</html>

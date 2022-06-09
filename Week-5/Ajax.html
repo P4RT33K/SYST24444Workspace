@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- ==========================================================================
+Test AJAX
+
+ AUTHOR: Song Ho Ahn (song.ahn@gmail.com)
+CREATED: 2016-08-09
+UPDATED: 2022-02-25
+===============================================================================
+-->
+
+<head>
+
+<title>AJAX</title>
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="author" content="Song Ho Ahn" />
+
+<!-- CSS -->
+<style>
+body {
+    margin:0;
+    padding:0;
+    font-size:16px;
+}
+.comment {
+    color:#080;
+}
+.string {
+    color:#f0f;
+}
+</style>
+
+<!-- Javascript -->
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://www.songho.ca/js/Logger.js"></script>
+<script>
+// <![CDATA[
+
+///////////////////////////////////////////////////////////////////////////////
+// main entry point
+$(document).ready(function()
+{
+    Logger.open();
+
+    const FILE = "http://ejd.songho.ca/syst24444/students_2022.json";
+
+    // 1. ajax with XMLHttpRequest + callback
+    loadFile1(FILE, function(data)
+    {
+        log("=== 1. AJAX with XMLHttpRequest + callback ===");
+        let json = JSON.parse(data);    // convert text to json
+        log(json);
+        log();
+    });
+
+    // 2. ajax with XMLHttpRequest + Promise
+    loadFile2(FILE).then(function(data)
+    {
+        log("=== 2. AJAX with XMLHttpRequest + Promise ===");
+        let json = JSON.parse(data);    // convert text to json
+        log(json);
+        log();
+    }).catch(function(msg)
+    {
+        log(msg);
+    });
+
+    // 3. ajax with XMLHttpRequest + Promise + Arrow
+    loadFile3(FILE).then(data =>
+    {
+        log("=== 3. AJAX with XMLHttpRequest + Promise + Arrow ===");
+        let json = JSON.parse(data);    // convert text to json
+        log(json);
+        log();
+    }).catch(msg =>
+    {
+        log(msg);
+    });
+
+    // 4. ajax with XMLHttpRequest + Promise + Arrow + async + IIFE
+    // NOTE: must use await inside async function
+    (async () => {
+        try
+        {
+            let data = await loadFile3(FILE);   // wait util async task is resolved
+            log("=== 4. AJAX with XMLHttpRequest + Promise + Arrow + async + IIFE ===");
+            let json = JSON.parse(data);        // convert text to json
+            log(json);
+            log();
+        }
+        catch(e)
+        {
+            log(e);
+        }
+    })();
+
+    // 5. ajax with fetch() + Promise + Arrow
+    // NOTE: fetch() returns Response wrapper object, so you must get
+    // the data using text(), json(), arrayBuffer(), blob() etc.
+    fetch(FILE).then(response => response.json())
+               .then(json =>
+    {
+        log("=== 5. AJAX with fetch() ===");
+        log(json);
+        log();
+    }).catch(msg =>
+    {
+        log("[ERROR] " + msg);
+    });
+
+    // 6. ajax with fetch() + Promise + Arrow + async + IIFE
+    // NOTE: fetch() returns Response wrapper object, so you must get
+    // the data using text(), json(), arrayBuffer(), blob() etc.
+    (async () => {
+        try
+        {
+            let response = await fetch(FILE);
+            let json = await response.json();
+            log("=== 6. AJAX with fetch() + async + IIFE ===");
+            log(json);
+            log();
+        }
+        catch(e)
+        {
+            log("[ERROR] " + e.message);
+        }
+    })();
+
+    // 7. ajax with jQuery.ajax() + Promise + Arrow
+    let option = { url:FILE, type:"GET", dataType:"json" };
+    $.ajax(option).then(data =>
+    {
+        log("=== 7. AJAX with jQuery.ajax() + Promise + Arrow ===");
+        log(data);  // already converted to json
+        log();
+    }).catch(e =>
+    {
+        // NOTE: jQuery returns jqXHR object when failed
+        log("[ERROR] Failed load using $.ajax()");
+    });
+
+    // 8. ajax with jQuery.getJSON() + Promise + Arrow
+    $.getJSON(FILE).then(data =>
+    {
+        log("=== 8. AJAX with jQuery.getJSON() + Promise + Arrow ===");
+        log(data);  // already converted to json
+        log();
+    }).catch(e =>
+    {
+        // NOTE: jQuery returns jqXHR object when failed
+        log("[ERROR] Failed to load using $.getJSON()");
+    });
+
+    // 9. ajax with XMLHttpRequest + async function
+    loadFile4(FILE);
+});
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// AJAX using XMLHttpRequest + callback
+function loadFile1(url, callback)
+{
+    let xhr = new XMLHttpRequest();
+    // init
+    xhr.open("GET", url);
+    //xhr.responseType = "text"; // text, json, blob ...
+
+    // send it async
+    xhr.send();
+
+    // add events for async loading
+    xhr.onload = function()
+    {
+        if(xhr.status == 200) // OK
+        {
+            callback(xhr.response);
+        }
+        else
+        {
+            log("[ERROR] Failed to load: " + url);
+        }
+    };
+    xhr.onerror = function()
+    {
+        log("[ERROR] Failed to load: " + url);
+    };
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// AJAX using XMLHttpRequest + Promise
+function loadFile2(url)
+{
+    // return promise object
+    return new Promise(function(resolve, reject)
+    {
+        let xhr = new XMLHttpRequest();
+        // init
+        xhr.open("GET", url);
+        //xhr.responseType = "text"; // text, json, blob ...
+
+        // send it async
+        xhr.send();
+
+        // add events for async loading
+        xhr.onload = function()
+        {
+            if(xhr.status == 200) // OK
+            {
+                resolve(xhr.response);
+            }
+            else
+            {
+                reject("[ERROR] Failed to load: " + url);
+            }
+        };
+        xhr.onerror = function()
+        {
+            reject("[ERROR] Failed to load: " + url);
+        };
+    });
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// AJAX using XMLHttpRequest + Promise + arrow
+function loadFile3(url)
+{
+    // return promise object
+    return new Promise((resolve, reject) =>
+    {
+        let xhr = new XMLHttpRequest();
+        // init
+        xhr.open("GET", url);
+        //xhr.responseType = "text"; // text, json, blob ...
+
+        // send it async
+        xhr.send();
+
+        // add events for async loading
+        xhr.onload = () =>
+        {
+            if(xhr.status == 200) // OK
+            {
+                resolve(xhr.response);
+            }
+            else
+            {
+                reject("[ERROR] Failed to load: " + url);
+            }
+        };
+        xhr.onerror = () =>
+        {
+            reject("[ERROR] Failed to load: " + url);
+        };
+    });
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// AJAX using XMLHttpRequest + Promise + arrow + async
+async function loadFile4(url)
+{
+    let promise = new Promise((resolve, reject) =>
+    {
+        let xhr = new XMLHttpRequest();
+        // init
+        xhr.open("GET", url);
+        //xhr.responseType = "text"; // text, json, blob ...
+
+        // send it async
+        xhr.send();
+
+        // add events for async loading
+        xhr.onload = () =>
+        {
+            if(xhr.status == 200) // OK
+            {
+                resolve(xhr.response);
+            }
+            else
+            {
+                reject("[ERROR] Failed to load: " + url);
+            }
+        };
+        xhr.onerror = () =>
+        {
+            reject("[ERROR] Failed to load: " + url);
+        };
+    });
+
+    try
+    {
+        let data = await promise;
+        log("=== 9. AJAX with XMLHttpRequest + Promise + Arrow + async + IIFE ===");
+        let json = JSON.parse(data);        // convert text to json
+        log(json);
+        log();
+    }
+    catch(e)
+    {
+        log(e);
+    }
+}
+
+
+// ]]>
+</script>
+
+</head>
+<body>
+
+<h1>AJAX</h1>
+
+<pre><code>
+    <span class="comment">// JSON file to load</span>
+    const FILE = <span class="string">"students_2022.json"</span>;
+
+    <span class="comment">// 1. ajax with XMLHttpRequest + callback</span>
+    loadFile1(FILE, <b>function(data)</b>
+    {
+        log(<span class="string">"=== 1. AJAX with XMLHttpRequest + callback ==="</span>);
+        let json = JSON.parse(data);    <span class="comment">// convert text to json</span>
+        log(json);
+        log();
+    });
+
+    <span class="comment">// 2. ajax with XMLHttpRequest + Promise</span>
+    loadFile2(FILE).<b>then</b>(<b>function(data)</b>
+    {
+        log(<span class="string">"=== 2. AJAX with XMLHttpRequest + Promise ==="</span>);
+        let json = JSON.parse(data);    <span class="comment">// convert text to json</span>
+        log(json);
+        log();
+    }).<b>catch</b>(<b>function(msg)</b>
+    {
+        log(msg);
+    });
+
+    <span class="comment">// 3. ajax with XMLHttpRequest + Promise + Arrow</span>
+    loadFile3(FILE).<b>then</b>(<b>data =></b>
+    {
+        log(<span class="string">"=== 3. AJAX with XMLHttpRequest + Promise + Arrow ==="</span>);
+        let json = JSON.parse(data);    <span class="comment">// convert text to json</span>
+        log(json);
+        log();
+    }).<b>catch</b>(<b>msg =></b>
+    {
+        log(msg);
+    });
+
+    <span class="comment">// 4. ajax with XMLHttpRequest + Promise + Arrow + async + IIFE</span>
+    <span class="comment">// NOTE: must use await inside async function</span>
+    (<b>async</b> () => {
+        try {
+            let data = <b>await</b> loadFile3(FILE);
+            log(<span class="string">"=== 4. AJAX with XMLHttpRequest + Promise + Arrow + async + IIFE ==="</span>);
+            let json = JSON.parse(data);    <span class="comment">// convert text to json</span>
+            log(json);
+            log();
+        } catch(msg) {
+            log(msg);
+        }
+    })();
+
+    <span class="comment">// 5. ajax with fetch() + Promise + Arrow</span>
+    <span class="comment">// NOTE: fetch() returns Response wrapper object, so you must get</span>
+    <span class="comment">// the data using text(), json(), arrayBuffer(), blob() etc.</span>
+    <span class="comment">// json() function also returns Promise object</span>
+    <b>fetch</b>(FILE)
+    .<b>then(response =></b> response.<b>json()</b>)
+    .<b>then(json =></b>
+    {
+        log(<span class="string">"=== 5. AJAX with fetch() ==="</span>);
+        log(json);
+        log();
+    })
+    .<b>catch(msg =></b>
+    {
+        log("[ERROR]" + msg);
+    });
+
+    <span class="comment">// 6. ajax with fetch() + Promise + Arrow + async + IIFE</span>
+    <span class="comment">// NOTE: must use await inside async function</span>
+    (<b>async</b> () => {
+        try{
+        let response = <b>await</b> fetch(FILE);
+        let json = <b>await</b> response.json();
+        log(<span class="string">"=== 6. AJAX with fetch() + async + IIFE ==="</span>);
+        log(json);
+        log();
+        }catch(e){ log(e.message); }
+    })();
+
+    <span class="comment">// 7. ajax with jQuery.ajax() + Promise + Arrow</span>
+    let option = { url:FILE, type:"GET", dataType:"json"};
+    $.ajax(option).<b>then(data =></b>
+    {
+        log(<span class="string">"=== 7. AJAX with jQuery.ajax() + Promise + Arrow ==="</span>);
+        log(data);  <span class="comment">// already converted to json</span>
+        log();
+    }).<b>catch(data =></b>
+    {
+        <span class="comment">// NOTE: jQuery returns jqXHR object when failed</span>
+        log("[ERROR] in $.ajax()");
+    });
+
+    <span class="comment">// 8. ajax with jQuery.getJSON() + Promise + Arrow</span>
+    $.getJSON(FILE).<b>then(data =></b>
+    {
+        log(<span class="string">"=== 8. AJAX with jQuery.getJSON() + Promise + Arrow ==="</span>);
+        log(data);  <span class="comment">// already converted to json</span>
+        log();
+    }).<b>catch(data =></b>
+    {
+        <span class="comment">// NOTE: jQuery returns jqXHR object when failed</span>
+        log("[ERROR] in $.getJSON()");
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</code></pre>
+
+</body>
+</html>

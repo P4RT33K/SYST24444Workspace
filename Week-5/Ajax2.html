@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- ==========================================================================
+Test AJAX with CORS
+
+ AUTHOR: Song Ho Ahn (song.ahn@gmail.com)
+CREATED: 2016-08-09
+UPDATED: 2020-06-04
+===============================================================================
+-->
+
+<head>
+
+<title>AJAX with CORS</title>
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="author" content="Song Ho Ahn" />
+
+<!-- CSS -->
+<style>
+body {
+    margin:0;
+    padding:0;
+    font-size:16px;
+}
+.comment {
+    color:#080;
+}
+.string {
+    color:#f0f;
+}
+</style>
+
+<!-- Javascript -->
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://www.songho.ca/js/Logger.js"></script>
+<script>
+// <![CDATA[
+
+///////////////////////////////////////////////////////////////////////////////
+// main entry point
+$(document).ready(function()
+{
+    Logger.open();
+
+    const URL1 = "http://www.songho.ca/tmp/students_2022.json";
+    // enable Access-Control-Allow-Origin "*" on the server
+    const URL2 = "http://ejd.songho.ca/syst24444/students_2022.json";
+
+    loadFile(URL1).then(data =>
+    {
+        log("=== AJAX with XMLHttpRequest + Promise + Arrow ===");
+        let json = JSON.parse(data);    // convert text to json
+        log(json);
+        log();
+    }).catch(msg =>
+    {
+        log("ERROR in loadFile()");
+    });
+
+    // ajax with fetch()
+    fetch(URL2)
+    .then(response => response.json())
+    .then(json =>
+    {
+        log("=== AJAX with fetch() + Promise + Arrow ===");
+        log(json);
+        log();
+    }).catch(msg =>
+    {
+        log("ERROR in fetch()");
+    });
+
+    // ajax with jQuery.ajax() + Promise + Arrow
+    let option = { url:URL1, type:"GET", dataType:"json"};
+    $.ajax(option).then(data =>
+    {
+        log("=== AJAX with jQuery.ajax() + Promise + Arrow ===");
+        log(data);  // already converted to json
+        log();
+    }).catch(e =>
+    {
+        log("ERROR in $.ajax()");
+    });
+});
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// AJAX using XMLHttpRequest + Promise + arrow
+function loadFile(url)
+{
+    // return promise object
+    return new Promise((resolve, reject) =>
+    {
+        let xhr = new XMLHttpRequest();
+        // init
+        xhr.open("GET", url);
+        //xhr.responseType = "text"; // text, json, blob ...
+
+        // send it async
+        xhr.send();
+
+        // add events for async loading
+        xhr.onload = () =>
+        {
+            if(xhr.status == 200) // OK
+            {
+                resolve(xhr.response);
+            }
+            else
+            {
+                reject("[ERROR] Failed to load: " + url);
+            }
+        };
+        xhr.onerror = () =>
+        {
+            reject("[ERROR] Failed to load: " + url);
+        };
+    });
+}
+
+
+// ]]>
+</script>
+
+</head>
+<body>
+
+<h1>AJAX with CORS (Cross-Origin Resource Sharing)</h1>
+
+<pre><code>
+    <span class="comment">// JSON file to load</span>
+    const URL1 = <span class="string">"http://www.songho.ca/tmp/students_2022.json"</span>;
+    <span class="comment">// enable Access-Control-Allow-Origin on the server</span>
+    const URL2 = <span class="string">"http://ejd.songho.ca/syst24444/students_2022.json"</span>;
+
+    <span class="comment">// ajax with XMLHttpRequest + Promise + Arrow</span>
+    loadFile(URL1).<b>then</b>(<b>data =></b>
+    {
+        log(<span class="string">"=== AJAX with XMLHttpRequest + Promise + Arrow ==="</span>);
+        let json = JSON.parse(data);    <span class="comment">// convert text to json</span>
+        log(json);
+        log();
+    }).<b>catch</b>(<b>msg =></b>
+    {
+        log(<span class="string">"ERROR in loadFile()"</span>);
+    });
+
+
+    <span class="comment">// ajax with fetch()</span>
+    <b>fetch</b>(URL1)
+    .<b>then(response =></b> response.json())
+    .<b>then(json =></b>
+    {
+        log(<span class="string">"=== AJAX with fetch() + Promise + Arrow ==="</span>);
+        log(json);
+        log();
+    }).<b>catch(msg =></b>
+    {
+        log(<span class="string">"ERROR in fetch()"</span>);
+    });
+
+
+
+    <span class="comment">// ajax with jQuery.ajax() + Promise + Arrow</span>
+    let option = { url:URL1, type:"GET", dataType:"json"};
+    $.ajax(option).<b>then(data =></b>
+    {
+        log(<span class="string">"=== AJAX with jQuery.ajax() + Promise + Arrow ==="</span>);
+        log(data);  <span class="comment">// already converted to json</span>
+        log();
+    }).<b>catch(e =></b>
+    {
+        log(<span class="string">"ERROR in $.ajax()"</span>);
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</code></pre>
+
+</body>
+</html>
