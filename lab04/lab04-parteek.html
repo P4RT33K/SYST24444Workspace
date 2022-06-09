@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!--
+Lab04: Exercise CSS Selector
+
+ AUTHOR: 
+CREATED:
+UPDATED:
+-->
+
+<head>
+<title>Lab04: Selector</title>
+<meta charset="utf-8" />
+<meta name="author" content="" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- CSS -->
+<style>
+body {
+    padding:0;
+    margin:0;
+    font-size:16px;
+    font-family:arial, helvetica, sans-serif;
+}
+.menu {
+    position:fixed;
+    top:0;
+    width:100%;
+    font-size:1.5em;
+    line-height:1em;
+    background-color:#ccc;
+    opacity:0.8;
+}
+.menu a {
+    display:block;
+    float:left;
+    padding:0.5em 1em;
+}
+.menu a:hover {
+    background-color:#888;
+}
+#topspacer {
+    height:3em; /* = line-height + top/bottom padding = 1.5 + 1.5*0.5*2 */
+}
+.block {
+    border:1px solid #888;
+    margin:1em;
+    padding:1em;
+}
+#block1 { background-color:#fcc; }
+#block2 { background-color:#cfc; }
+#block3 { background-color:#ccf; }
+</style>
+
+<!-- JavaScript -->
+<script src="https://www.songho.ca/js/Logger.js"></script>
+
+<script>
+// entry point ===============================================================
+document.addEventListener("DOMContentLoaded", () =>
+{
+    // open logger window
+    Logger.open();
+    log("Page is loaded");
+
+    // TASK1:
+    // Find all <a> tags of "div.menu" div, then print "href" value of each item
+        let menuItems = document.querySelectorAll("div.menu a");
+        for(let a of menuItems)
+        {
+            log("HREF: " + a.href);
+        }
+
+    // TASK2:
+    // Find all <h1> tags under div.block, then print <h1> text
+        let hs = document.querySelectorAll("div.block h1");
+        for(let h of hs)
+        {
+            log("H1: " + h.innerText);
+        }
+
+    // TASK3:
+    // Find <input name="text3"> in div#block1, then print its value
+    // HINT: Use attribute selector, input[name='']
+        let input = document.querySelector("#block1 input[name='text3']");
+        log("VALUE: " + input.value);
+
+    // TASK4:
+    // Find the second <input> in div#block1, then print the value of the text input
+    // HINT: Use pseudo element, :first-child, :last-child, nth-child() 
+    input = document.querySelector("#block1 input:nth-child(2)");
+    log("VALUE: " + input.value);
+
+    // TASK5:
+    // find all descendants <span> tags in p#numbers, then print its text
+        let spans = document.querySelectorAll("p#numbers span");
+        let str = "";
+        for(let span of spans)
+        {
+            str += span.innerText + " ";
+        }
+        log("SPANS1: " + str);
+
+    // TASK6:
+    // find all direct child <span> tags in p#numbers, then print its text
+        spans = document.querySelectorAll("p#numbers > span");
+        str = "";
+        for(let span of spans)
+        {
+            str += span.innerText + " ";
+        }
+        log("SPANS2: " + str);
+
+});
+</script>
+
+</head>
+
+
+<body>
+
+<div class="menu">
+<a href="#block1">Block 1</a>
+<a href="#block2">Block 2</a>
+<a href="#block3">Block 3</a>
+</div>
+
+<div id="topspacer">
+</div>
+
+<div id="block1" class="block">
+<h1>Block 1</h1>
+<div>
+<input type="text" name="text1" value="Text 1">
+<input type="text" name="text2" value="Text 2">
+<input type="text" name="text3" value="Text 3">
+</div>
+<p id="numbers">
+<span>1</span> <span>2</span> <span>3</span> <strong><span>4</span> <span>5</span> <span>6</span></strong>
+</p>
+<p>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc nec scelerisque arcu, non auctor leo. Suspendisse vel massa ac diam ullamcorper ullamcorper non luctus justo. Sed euismod tristique rutrum. Ut gravida aliquam nunc, id maximus eros accumsan eget. Nullam et erat ac arcu pellentesque convallis. In eu risus vel est ullamcorper mattis id et risus. Duis nec tellus in massa feugiat vulputate. Etiam ultricies, nisl eget varius maximus, ante lectus placerat justo, sed dictum tortor tellus at turpis. Aliquam erat volutpat. Suspendisse potenti. Nullam viverra posuere magna, sed mattis nisl porttitor quis.
+</p>
+<p>
+Aenean iaculis velit sapien, in tincidunt eros pulvinar vulputate. Ut aliquet, enim gravida vehicula tempor, sem augue congue sapien, quis convallis tortor arcu id eros. Quisque sit amet tortor sed nisl vehicula tempus ac et nisl. Phasellus feugiat, tortor eu dignissim interdum, risus dolor auctor enim, sed porttitor quam tortor vitae libero. Sed tristique blandit viverra. Maecenas vel sodales odio, ac luctus mi. Praesent vitae urna faucibus, tempor dolor id, tempus eros. Ut egestas ac dui et pretium. Aenean feugiat eros lectus, in imperdiet libero elementum ut. Proin ipsum ante, dignissim sit amet dui eu, vehicula accumsan velit. Curabitur dapibus ante ac lectus pellentesque eleifend.
+</p>
+<p>
+Curabitur sed fermentum tortor, pulvinar ultrices magna. Aenean faucibus, arcu ut sollicitudin blandit, ipsum nisl vehicula odio, id facilisis urna nibh sed ipsum. Pellentesque in metus sed arcu ullamcorper interdum at sed metus. Phasellus hendrerit ultricies lacinia. Donec dapibus varius mi, a maximus nisl volutpat eget. Vestibulum porta, dui ut fermentum sodales, diam massa aliquet felis, at vestibulum dolor sem nec sapien. Etiam diam nisi, pharetra convallis tempus et, vehicula sed quam. Nunc quis pretium orci, eu ornare massa. Duis bibendum mi a diam ullamcorper, in tristique orci dignissim. Integer interdum lectus libero, non imperdiet odio blandit et. Vivamus gravida enim a felis varius dictum. Pellentesque venenatis gravida odio, nec eleifend diam interdum sed.
+</p>
+<p>
+Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aliquam varius efficitur est, sit amet scelerisque ligula eleifend fringilla. Donec pulvinar cursus dui, sit amet sollicitudin orci euismod sit amet. Sed vitae porta mauris, sit amet efficitur nisi. Duis nec ligula convallis, ultricies quam molestie, venenatis sem. Quisque erat odio, aliquam ut dui vitae, convallis convallis ante. Donec vitae urna scelerisque purus dignissim laoreet. Donec rutrum, risus sit amet porttitor commodo, nunc tortor egestas lacus, id pellentesque enim neque ut velit. Curabitur maximus nisl non consequat accumsan. Fusce est mi, volutpat nec semper quis, auctor vel nisl. Praesent ac lectus diam.
+</p>
+<p>
+Suspendisse potenti. Donec lacinia elementum urna, tempor vehicula ipsum iaculis in. In varius varius arcu, sed auctor sem iaculis in. Aliquam vehicula orci id leo tincidunt ornare. Mauris vehicula eget justo ac posuere. Quisque vitae rhoncus mi, vitae consequat nibh. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse et nibh ac orci sollicitudin imperdiet. Mauris augue nisl, lacinia non arcu molestie, consequat vehicula tortor.
+</p>
+
+</div>
+
+<div id="block2" class="block">
+<h1>Block 2</h1>
+<p>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc nec scelerisque arcu, non auctor leo. Suspendisse vel massa ac diam ullamcorper ullamcorper non luctus justo. Sed euismod tristique rutrum. Ut gravida aliquam nunc, id maximus eros accumsan eget. Nullam et erat ac arcu pellentesque convallis. In eu risus vel est ullamcorper mattis id et risus. Duis nec tellus in massa feugiat vulputate. Etiam ultricies, nisl eget varius maximus, ante lectus placerat justo, sed dictum tortor tellus at turpis. Aliquam erat volutpat. Suspendisse potenti. Nullam viverra posuere magna, sed mattis nisl porttitor quis.
+</p>
+<p>
+Aenean iaculis velit sapien, in tincidunt eros pulvinar vulputate. Ut aliquet, enim gravida vehicula tempor, sem augue congue sapien, quis convallis tortor arcu id eros. Quisque sit amet tortor sed nisl vehicula tempus ac et nisl. Phasellus feugiat, tortor eu dignissim interdum, risus dolor auctor enim, sed porttitor quam tortor vitae libero. Sed tristique blandit viverra. Maecenas vel sodales odio, ac luctus mi. Praesent vitae urna faucibus, tempor dolor id, tempus eros. Ut egestas ac dui et pretium. Aenean feugiat eros lectus, in imperdiet libero elementum ut. Proin ipsum ante, dignissim sit amet dui eu, vehicula accumsan velit. Curabitur dapibus ante ac lectus pellentesque eleifend.
+</p>
+<p>
+Curabitur sed fermentum tortor, pulvinar ultrices magna. Aenean faucibus, arcu ut sollicitudin blandit, ipsum nisl vehicula odio, id facilisis urna nibh sed ipsum. Pellentesque in metus sed arcu ullamcorper interdum at sed metus. Phasellus hendrerit ultricies lacinia. Donec dapibus varius mi, a maximus nisl volutpat eget. Vestibulum porta, dui ut fermentum sodales, diam massa aliquet felis, at vestibulum dolor sem nec sapien. Etiam diam nisi, pharetra convallis tempus et, vehicula sed quam. Nunc quis pretium orci, eu ornare massa. Duis bibendum mi a diam ullamcorper, in tristique orci dignissim. Integer interdum lectus libero, non imperdiet odio blandit et. Vivamus gravida enim a felis varius dictum. Pellentesque venenatis gravida odio, nec eleifend diam interdum sed.
+</p>
+<p>
+Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aliquam varius efficitur est, sit amet scelerisque ligula eleifend fringilla. Donec pulvinar cursus dui, sit amet sollicitudin orci euismod sit amet. Sed vitae porta mauris, sit amet efficitur nisi. Duis nec ligula convallis, ultricies quam molestie, venenatis sem. Quisque erat odio, aliquam ut dui vitae, convallis convallis ante. Donec vitae urna scelerisque purus dignissim laoreet. Donec rutrum, risus sit amet porttitor commodo, nunc tortor egestas lacus, id pellentesque enim neque ut velit. Curabitur maximus nisl non consequat accumsan. Fusce est mi, volutpat nec semper quis, auctor vel nisl. Praesent ac lectus diam.
+</p>
+<p>
+Suspendisse potenti. Donec lacinia elementum urna, tempor vehicula ipsum iaculis in. In varius varius arcu, sed auctor sem iaculis in. Aliquam vehicula orci id leo tincidunt ornare. Mauris vehicula eget justo ac posuere. Quisque vitae rhoncus mi, vitae consequat nibh. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse et nibh ac orci sollicitudin imperdiet. Mauris augue nisl, lacinia non arcu molestie, consequat vehicula tortor.
+</p>
+</div>
+
+<div id="block3" class="block">
+<h1>Block 3</h1>
+<p>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc nec scelerisque arcu, non auctor leo. Suspendisse vel massa ac diam ullamcorper ullamcorper non luctus justo. Sed euismod tristique rutrum. Ut gravida aliquam nunc, id maximus eros accumsan eget. Nullam et erat ac arcu pellentesque convallis. In eu risus vel est ullamcorper mattis id et risus. Duis nec tellus in massa feugiat vulputate. Etiam ultricies, nisl eget varius maximus, ante lectus placerat justo, sed dictum tortor tellus at turpis. Aliquam erat volutpat. Suspendisse potenti. Nullam viverra posuere magna, sed mattis nisl porttitor quis.
+</p>
+<p>
+Aenean iaculis velit sapien, in tincidunt eros pulvinar vulputate. Ut aliquet, enim gravida vehicula tempor, sem augue congue sapien, quis convallis tortor arcu id eros. Quisque sit amet tortor sed nisl vehicula tempus ac et nisl. Phasellus feugiat, tortor eu dignissim interdum, risus dolor auctor enim, sed porttitor quam tortor vitae libero. Sed tristique blandit viverra. Maecenas vel sodales odio, ac luctus mi. Praesent vitae urna faucibus, tempor dolor id, tempus eros. Ut egestas ac dui et pretium. Aenean feugiat eros lectus, in imperdiet libero elementum ut. Proin ipsum ante, dignissim sit amet dui eu, vehicula accumsan velit. Curabitur dapibus ante ac lectus pellentesque eleifend.
+</p>
+<p>
+Curabitur sed fermentum tortor, pulvinar ultrices magna. Aenean faucibus, arcu ut sollicitudin blandit, ipsum nisl vehicula odio, id facilisis urna nibh sed ipsum. Pellentesque in metus sed arcu ullamcorper interdum at sed metus. Phasellus hendrerit ultricies lacinia. Donec dapibus varius mi, a maximus nisl volutpat eget. Vestibulum porta, dui ut fermentum sodales, diam massa aliquet felis, at vestibulum dolor sem nec sapien. Etiam diam nisi, pharetra convallis tempus et, vehicula sed quam. Nunc quis pretium orci, eu ornare massa. Duis bibendum mi a diam ullamcorper, in tristique orci dignissim. Integer interdum lectus libero, non imperdiet odio blandit et. Vivamus gravida enim a felis varius dictum. Pellentesque venenatis gravida odio, nec eleifend diam interdum sed.
+</p>
+<p>
+Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aliquam varius efficitur est, sit amet scelerisque ligula eleifend fringilla. Donec pulvinar cursus dui, sit amet sollicitudin orci euismod sit amet. Sed vitae porta mauris, sit amet efficitur nisi. Duis nec ligula convallis, ultricies quam molestie, venenatis sem. Quisque erat odio, aliquam ut dui vitae, convallis convallis ante. Donec vitae urna scelerisque purus dignissim laoreet. Donec rutrum, risus sit amet porttitor commodo, nunc tortor egestas lacus, id pellentesque enim neque ut velit. Curabitur maximus nisl non consequat accumsan. Fusce est mi, volutpat nec semper quis, auctor vel nisl. Praesent ac lectus diam.
+</p>
+<p>
+Suspendisse potenti. Donec lacinia elementum urna, tempor vehicula ipsum iaculis in. In varius varius arcu, sed auctor sem iaculis in. Aliquam vehicula orci id leo tincidunt ornare. Mauris vehicula eget justo ac posuere. Quisque vitae rhoncus mi, vitae consequat nibh. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse et nibh ac orci sollicitudin imperdiet. Mauris augue nisl, lacinia non arcu molestie, consequat vehicula tortor.
+</p>
+</div>
+
+</body>
+</html>
