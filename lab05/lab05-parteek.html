@@ -5,8 +5,43 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>lab05-parteek</title>
+
+    <!-- JS -->
+    <script>
+        // main entry point
+        document.addEventListener("DOMContentLoaded", () => {
+        
+            console.log("page is loaded!")
+            
+            // load json locally
+            const URL = "students_2022.json";
+
+            // VERSION-1: using Fetch()
+            fetch(URL)
+            // convert raw to json
+            .then(response => response.json())
+            .then(json => {
+                // parse JSON
+                let html = "";
+                for(let s of json) // json is array of students
+                {
+                    html += "<li>" + s.firstName + " " + s.lastName + "</li>";
+                }
+                // append <li> elements to <ol>
+                let ol = document.getElementById("students");
+                ol.innerHTML = html;
+            })
+            .catch(e => console.log(e));
+
+        });
+    </script>
+
 </head>
 <body>
+
+    <h1>Students</h1>
+    <!-- placeholder for student names -->
+    <ol id="students"></ol>
     
 </body>
 </html>
