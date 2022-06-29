@@ -1,0 +1,13 @@
+table, th, td, tr{
+    border: 1px solid #000 ;
+    border-collapse: collapse;
+}
+table{
+    width: 100vw;
+}
+tr:first-child td{
+    font-weight: bolder;
+}
+tr:nth-child(odd) td{
+    background-color: rgb(245, 243, 243);
+}
